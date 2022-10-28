@@ -1,29 +1,238 @@
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-const path = require("path");
 const fs = require("fs");
 
-const DIST_DIR = path.resolve(__dirname, "dist");
-const distPath = path.join(DIST_DIR, "team.html");
+const Manager = require("./lib/Manager.classes");
+const Engineer = require("./lib/Engineer.classes");
+const Intern = require("./lib/Intern.classes");
 
-const render = require("./src/page-template.js");
+const generateSite = require("./src/generate-html");
 
 const teamMembers = [];
 
 // function for creating manager - inquirer questions
-// take those questions and create a new Manager with the user provided answers
-// push that new Manager to the team members array
+const managerQuestions = [
+  {
+    type: "input",
+    message: "What is your managers name?",
+    name: "managerName",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the managers employee ID number?",
+    name: "managerId",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the managers email?",
+    name: "managerEmail",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the managers office number?",
+    name: "officeNumber",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+];
 
-// follow the same pattern for each type of employee
-// build a function for them that uses inquirer
+const employeeSelection = [
+  {
+    type: "list",
+    message: "Please select which option you would like to continue with:",
+    name: "menu",
+    choices: ["add an engineer", "add an intern", "finish building my team"],
+  },
+];
 
-// STRUCTURING IT
+const engineerQuestions = [
+  {
+    type: "input",
+    message: "What is your engineers name?",
+    name: "engineerName",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the engineers employee ID number?",
+    name: "engineerId",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the engineers employee email?",
+    name: "engineerEmail",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the engineers github?",
+    name: "engineerGithub",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+];
 
-// start with manager function, since every team needs a manager
-// at the end of manager function, call a createTeam function
+const internQuestions = [
+  {
+    type: "input",
+    message: "What is your interns name?",
+    name: "internName",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the interns employee ID number?",
+    name: "internId",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the interns email?",
+    name: "internEmail",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+  {
+    type: "input",
+    message: "What is the interns school?",
+    name: "internSchool",
+    validate: (value) => {
+      if (value) {
+        return true;
+      } else {
+        return "i need a value to continue";
+      }
+    },
+  },
+];
 
-// this function would simply ask the user which type of employee they would like to add, based on their choice, run the correesponding function
+function buildTeam() {
+  const fileName = "team";
+  fs.writeFileSync(
+    `./dist/${fileName}.html`,
+    generateSite(teamMembers),
+    "utf-8"
+  );
+}
 
-// at the end, use fs to write file while sending the team array over to the function you brought in from page-template.js
+function promptIntern() {
+  inquirer.prompt(internQuestions).then(function (answers) {
+    const intern = new Intern(
+      answers.internName,
+      answers.internId,
+      answers.internEmail,
+      answers.internSchool
+    );
+    teamMembers.push(intern);
+    promptMenu();
+  });
+}
+
+function promptEngineer() {
+  inquirer.prompt(engineerQuestions).then(function (answers) {
+    const engineer = new Engineer(
+      answers.engineerName,
+      answers.engineerId,
+      answers.engineerEmail,
+      answers.engineerGithub
+    );
+    teamMembers.push(engineer);
+    promptMenu();
+  });
+}
+
+function promptMenu() {
+  inquirer.prompt(employeeSelection).then(function (userChoice) {
+    switch (userChoice.menu) {
+      case "add an engineer":
+        promptEngineer();
+        break;
+      case "add an intern":
+        promptIntern();
+        break;
+      default:
+        buildTeam();
+    }
+  });
+}
+
+function promptManager() {
+  inquirer.prompt(managerQuestions).then(function (answers) {
+    const manager = new Manager(
+      answers.managerName,
+      answers.managerId,
+      answers.managerEmail,
+      answers.officeNumber
+    );
+    teamMembers.push(manager);
+    promptMenu();
+  });
+}
+
+promptManager();
