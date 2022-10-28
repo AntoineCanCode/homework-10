@@ -11,9 +11,9 @@ describe("Employee", () => {
       expect("email" in obj).toEqual(true);
     });
     it("should set name, id, and email when created", () => {
-      const name = "Stephen";
-      const id = "123";
-      const email = "sbullocks@gmail.com";
+      const name = "Antoine";
+      const id = "54321";
+      const email = "antoineg@gmail.com";
 
       const obj = new Employee(name, id, email);
 
@@ -25,12 +25,12 @@ describe("Employee", () => {
   // Test getName method.
   describe("getName", () => {
     it("should return employee name", () => {
-      const name = "Stephen";
+      const name = "Antoine";
 
       const newName = new Employee(
         name,
-        "123",
-        "sbullocks@gmail.com"
+        "54321",
+        "antoineg@gmail.com"
       ).getName();
 
       expect(name).toEqual(newName);
@@ -39,9 +39,9 @@ describe("Employee", () => {
   // Test getId method.
   describe("getId", () => {
     it("should return an employee id", () => {
-      const id = "123";
+      const id = "54321";
 
-      const newId = new Employee("Stephen", id, "sbullocks@gmail.com").getId();
+      const newId = new Employee("Antoine", id, "antoineg@gmail.com").getId();
 
       expect(id).toEqual(newId);
     });
@@ -49,9 +49,9 @@ describe("Employee", () => {
   // Test getEmail method.
   describe("getEmail", () => {
     it("should return an employee email", () => {
-      const email = "sbullocks@gmail.com";
+      const email = "antoineg@gmail.com";
 
-      const newEmail = new Employee("Stephen", "123", email).getEmail();
+      const newEmail = new Employee("Antoine", "54321", email).getEmail();
 
       expect(email).toEqual(newEmail);
     });
@@ -62,9 +62,9 @@ describe("Employee", () => {
       const role = "Employee";
 
       const newRole = new Employee(
-        "Stephen",
-        "123",
-        "sbullocks@gmail.com"
+        "Antoine",
+        "54321",
+        "antoineg@gmail.com"
       ).getRole();
 
       expect(role).toEqual(newRole);

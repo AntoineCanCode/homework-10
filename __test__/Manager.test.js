@@ -10,9 +10,9 @@ describe("Manager", () => {
       expect("email" in obj).toEqual(true);
     });
     it("should set name, id, and email when created", () => {
-      const name = "Stephen";
-      const id = "123";
-      const email = "sbullocks@gmail.com";
+      const name = "Antoine";
+      const id = "54321";
+      const email = "antoineg@gmail.com";
 
       const obj = new Employee(name, id, email);
 
